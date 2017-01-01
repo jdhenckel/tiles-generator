@@ -10,23 +10,15 @@
 </head>
 
 <body>
-    This is to draw tiles
+    This is to draw tiles. Use WASD, QEZX to change view.  Use 1,2 to add tile.
     <div ng-app="myApp" ng-controller="myCtrl">
         frame {{frame}}
         <br/>
         <svg id=mysvg width="100%" height="500" tabindex="0" ng-keydown="keyDown($event)" ng-keyup="keyUp($event)" ng-mousedown="mouseDown($event)" ng-mouseup="mouseUp($event)" ng-mousemove="mouseMove($event)">
 
             <defs>
-                <!-- TODO autogen from tileset -->
-                <g id="p1" stroke-linecap="round">
-                    <polygon points="13.0902,9.5106 -6.9098,9.5106 -13.0902,-9.5106 6.9098,-9.5106" style="fill:tan;stroke:black;stroke-width:1" />
-                    <line x1="0" y1="9.5106" x2="10" y2="-2.5" style="stroke:green;stroke-width:3" />
-                    <line x1="-10" y1="-3" x2="-6" y2="-9.51" style="stroke:blue;stroke-width:3" />
-                </g>
-                <g id="p2" stroke-linecap="round">
-                    <polygon points="18.0902,5.8779 -1.9098,5.8779 -18.0902,-5.8779 1.9098,-5.8779" style="fill:wheat;stroke:black;stroke-width:1" />
-                    <line x1="5" y1="5" x2="-7" y2="1" style="stroke:blue;stroke-width:3" />
-                    <line x1="-5" y1="-5" x2="7" y2="-1" style="stroke:green;stroke-width:3" />
+                <g ng-repeat="tileType in tileSet.tileTypes" id="{{tileType.id}}">
+                  <polygon ng-attr-points="{{tileType.points}}" style="fill:tan;stroke:black;stroke-width:.05" />
                 </g>
             </defs>
 
@@ -34,8 +26,8 @@
                 <use ng-repeat="tile in tileList" xlink:href="{{tile.type.name}}" ng-attr-transform="{{tile.transform}}" />
 
                 <!-- FOR DEBUGGING -->
-                <line ng-repeat="a in edgeLines" ng-attr-x1="{{a[0].x}}" ng-attr-y1="{{a[0].y}}" ng-attr-x2="{{a[1].x}}" ng-attr-y2="{{a[1].y}}" style="stroke:yellow;stroke-width:2" />
-                <line ng-repeat="a in lines" ng-attr-x1="{{a[0].x}}" ng-attr-y1="{{a[0].y}}" ng-attr-x2="{{a[1].x}}" ng-attr-y2="{{a[1].y}}" style="stroke:red;stroke-width:2" />
+                <line ng-repeat="a in edgeLines" ng-attr-x1="{{a[0].x}}" ng-attr-y1="{{a[0].y}}" ng-attr-x2="{{a[1].x}}" ng-attr-y2="{{a[1].y}}" style="stroke:yellow;stroke-width:.1" />
+                <line ng-repeat="a in lines" ng-attr-x1="{{a[0].x}}" ng-attr-y1="{{a[0].y}}" ng-attr-x2="{{a[1].x}}" ng-attr-y2="{{a[1].y}}" style="stroke:red;stroke-width:.1" />
             </g>
         </svg>
 

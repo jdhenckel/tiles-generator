@@ -8,7 +8,7 @@ function myCtrl($scope) {
     var snap = null;
     var viewAngle = 0;
     var viewOffset = vec(150, 150);
-    var viewScale = vec(2, -2);
+    var viewScale = vec(20, -20);
     var lastv = vec();
     var firstBorderTile = 0;
 
@@ -25,7 +25,7 @@ function myCtrl($scope) {
         var t = new Tile($scope.tileSet.pickAny());
         $scope.tileList.push(t);
     }
-    setInterval(animate, 720);
+    setInterval(animate, 20);
 
     // ****   MAIN LOOP    ****
     function animate() {

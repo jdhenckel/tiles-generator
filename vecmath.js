@@ -185,6 +185,17 @@ function degrees(radians) {
 }
 
 
+// This returns an string from an array of points
+function listOfPoints(arr, precision) {
+    if (precision == null) precision = 4;
+    var result = '';
+    for (var i = 0; i < arr.length; ++i) {
+      result += ' ' + arr[i].x.toFixed(precision) + ',' + arr[i].y.toFixed(precision);
+    }
+    return result;
+}
+
+
 // the end
 
 

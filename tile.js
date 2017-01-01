@@ -3,7 +3,7 @@ TileSet is a set of TileType.  The Tile is an instance of a TileType
 */
 
 function Tile(type, pos) { // constructor
-    this.pos = pos || vec();// randv(-100, 100);
+    this.pos = pos || randv(-10, 10);
     this.ang = Math.random() * Math.PI * 2;
     this.type = type;
     this.touches = [];
@@ -11,19 +11,9 @@ function Tile(type, pos) { // constructor
 }
 
 Tile.prototype.update = function() {
-    var a = this.ang;
-    var p = this.pos;
-    this.pointList = [];
-    //this.points = '';
-    for (var i = 0; i < this.type.turns.length; ++i) {
-        a += this.type.turns[i] * this.config.angleUnit;
-        p = trig(a).scale(this.type.moves[i] * this.type.scale).incr(p);
-        this.pointList.push(p);
-        //this.points += ' ' + p.x.toFixed(4) + ',' + p.y.toFixed(4);
-    }
-    this.transform = 'translate(' + this.pos.x.toFixed(1) + ' ' + this.pos.y.toFixed(1) + ')' +
-                    ' rotate(' + degrees(this.ang).toFixed(1) + ')';
-                // + ' scale(3)';
+    this.pointList = this.type.computePointList(this.ang, this.pos);
+    this.transform = 'translate(' + this.pos.x.toFixed(3) + ' ' + this.pos.y.toFixed(3) +
+                    ') rotate(' + degrees(this.ang).toFixed(1) + ')';
 }
 
 // Return true if this overlaps with given tile.
@@ -71,10 +61,23 @@ TileSet.prototype.pickAny = function() {
 
 
 function TileType(nam, tur, mov, mat, conf) { // constructor
-    this.scale = 20;
+    this.id = nam;
     this.name = '#' + nam;
     this.turns = tur;
     this.moves = mov;
     this.matches = mat;
     this.config = conf;
+    var list = this.computePointList(0, vec());
+    this.points = listOfPoints(list);
+}
+
+
+TileType.prototype.computePointList = function(a, p) {
+    var result = [];
+    for (var i = 0; i < this.turns.length; ++i) {
+        a += this.turns[i] * this.config.angleUnit;
+        p = trig(a).scale(this.moves[i]).incr(p);
+        result.push(p);
+    }
+    return result;
 }
