@@ -16,12 +16,12 @@ Tile.prototype.update = function() {
     this.pointList = [];
     //this.points = '';
     for (var i = 0; i < this.type.turns.length; ++i) {
-        a += radians(this.type.turns[i]);
+        a += this.type.turns[i] * this.config.angleUnit;
         p = trig(a).scale(this.type.moves[i] * this.type.scale).incr(p);
         this.pointList.push(p);
         //this.points += ' ' + p.x.toFixed(4) + ',' + p.y.toFixed(4);
     }
-    this.transform = 'translate(' + this.pos.x.toFixed(1) + ' ' + this.pos.y.toFixed(1) + ')' + 
+    this.transform = 'translate(' + this.pos.x.toFixed(1) + ' ' + this.pos.y.toFixed(1) + ')' +
                     ' rotate(' + degrees(this.ang).toFixed(1) + ')';
                 // + ' scale(3)';
 }
@@ -54,9 +54,13 @@ function TileSet() { // constructor
     this.allowRotation = true;
     this.allowReflection = false;
     this.matchSign = -1;
+    this.config = {
+        matchSign: -1,
+        angleUnit: pi / 10
+    };
     this.tileTypes = [
-        new TileType('p1', [36, 144, 72, 108], [cos(pi / 5), 1, 1, 1], [2, -2, -1, 1]),
-        new TileType('p2', [18, 162, 36, 144], [cos(pi / 10), 1, 1, 1], [2, -1, 1, -2]),
+        new TileType('p1', [2, 8, 4, 6], [cos(pi / 5), 1, 1, 1], [2, -2, -1, 1], this.config),
+        new TileType('p2', [1, 9, 2, 8], [cos(pi / 10), 1, 1, 1], [2, -1, 1, -2], this.config),
     ];
 }
 
@@ -66,11 +70,11 @@ TileSet.prototype.pickAny = function() {
 };
 
 
-function TileType(nam, tur, mov, mat) { // constructor
+function TileType(nam, tur, mov, mat, conf) { // constructor
     this.scale = 20;
     this.name = '#' + nam;
     this.turns = tur;
     this.moves = mov;
     this.matches = mat;
+    this.config = conf;
 }
-
