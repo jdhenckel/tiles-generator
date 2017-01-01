@@ -1,0 +1,10 @@
+/* Styles go here */
+
+svg {
+    border: 1px solid gray;
+    cursor: default;
+}
+
+svg:focus {
+    zzoutline: none;
+}

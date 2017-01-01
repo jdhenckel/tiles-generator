@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script data-require="angularjs@1.5.5" data-semver="1.5.5" src="https://code.angularjs.org/1.5.5/angular.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script src="vecmath.js"></script>
+    <script src="tile.js"></script>
+    <script src="script.js"></script>
+</head>
+
+<body>
+    This is to draw tiles
+    <div ng-app="myApp" ng-controller="myCtrl">
+        frame {{frame}}
+        <br/>
+        <svg id=mysvg width="100%" height="500" tabindex="0" ng-keydown="keyDown($event)" ng-keyup="keyUp($event)" ng-mousedown="mouseDown($event)" ng-mouseup="mouseUp($event)" ng-mousemove="mouseMove($event)">
+
+            <defs>
+                <!-- TODO autogen from tileset -->
+                <g id="p1" stroke-linecap="round">
+                    <polygon points="13.0902,9.5106 -6.9098,9.5106 -13.0902,-9.5106 6.9098,-9.5106" style="fill:tan;stroke:black;stroke-width:1" />
+                    <line x1="0" y1="9.5106" x2="10" y2="-2.5" style="stroke:green;stroke-width:3" />
+                    <line x1="-10" y1="-3" x2="-6" y2="-9.51" style="stroke:blue;stroke-width:3" />
+                </g>
+                <g id="p2" stroke-linecap="round">
+                    <polygon points="18.0902,5.8779 -1.9098,5.8779 -18.0902,-5.8779 1.9098,-5.8779" style="fill:wheat;stroke:black;stroke-width:1" />
+                    <line x1="5" y1="5" x2="-7" y2="1" style="stroke:blue;stroke-width:3" />
+                    <line x1="-5" y1="-5" x2="7" y2="-1" style="stroke:green;stroke-width:3" />
+                </g>
+            </defs>
+
+            <g ng-attr-transform="{{viewTransform}}">
+                <use ng-repeat="tile in tileList" xlink:href="{{tile.type.name}}" ng-attr-transform="{{tile.transform}}" />
+
+                <!-- FOR DEBUGGING -->
+                <line ng-repeat="a in edgeLines" ng-attr-x1="{{a[0].x}}" ng-attr-y1="{{a[0].y}}" ng-attr-x2="{{a[1].x}}" ng-attr-y2="{{a[1].y}}" style="stroke:yellow;stroke-width:2" />
+                <line ng-repeat="a in lines" ng-attr-x1="{{a[0].x}}" ng-attr-y1="{{a[0].y}}" ng-attr-x2="{{a[1].x}}" ng-attr-y2="{{a[1].y}}" style="stroke:red;stroke-width:2" />
+            </g>
+        </svg>
+
+        <!-- FOR DEBUGGING -->
+        <div ng-repeat="tile in tileList">
+            {{tile.type.name}} {{tile.points}} : {{tile.transform}}
+        </div>
+        MSG: {{msg}}
+        <br>VIEW: {{viewTransform}}
+    </div>
+    <!-- FOR DEBUGGING -->
+    <p id=res>__</p>
+</body>
+
+</html>
