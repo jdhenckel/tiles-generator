@@ -213,6 +213,7 @@ function myCtrl($scope) {
 
     $scope.mouseDown = function(ev) {
         mousePos = getWorldPos(vec(ev.offsetX, ev.offsetY));
+        setFlags(ev);
         var dist = 20;
         grab = null
         for (var i = 0; i < $scope.tileList.length; ++i) {
@@ -228,6 +229,15 @@ function myCtrl($scope) {
         $scope.mouseMove(ev);
     };
 
+    function setFlags(ev) {
+        mouseFlags = ev.buttons;   // 1,2,4,8,16
+        mouseFlags += ev.shiftKey ? 32 : 0;
+        mouseFlags += ev.ctrlKey ? 64 : 0;
+        mouseFlags += ev.altKey ? 128 : 0;
+        mouseFlags += ev.metaKey ? 256 : 0;
+        $scope.msg = mousePos + ' ' + mouseFlags;
+    }
+
     function getWorldPos(pos) {
         return pos.sub(viewOffset).rotate(-viewAngle).scale(viewScale.recip());
     }
@@ -237,11 +247,11 @@ function myCtrl($scope) {
     }
 
     function setViewTransform() {
-        $scope.viewTransform = 'translate(' + viewOffset.x + ', ' + viewOffset.y + ')';
+        $scope.viewTransform = 'translate(' + approx(viewOffset.x) + ', ' + approx(viewOffset.y) + ')';
         if (Math.abs(viewAngle) > 0.02) {
-            $scope.viewTransform += ' rotate(' + degrees(viewAngle) + ')';
+            $scope.viewTransform += ' rotate(' + degrees(viewAngle).toFixed(1) + ')';
         }
-        $scope.viewTransform += ' scale(' + viewScale.x + ', ' + viewScale.y + ')';
+        $scope.viewTransform += ' scale(' + approx(viewScale.x) + ', ' + approx(viewScale.y) + ')';
     }
 
     function removeTouches(tile) {
@@ -263,6 +273,7 @@ function myCtrl($scope) {
 
 
     $scope.mouseUp = function(ev) {
+        setFlags(ev);
         grab = null;
         $scope.edgeLines = [];
         document.getElementById("mysvg").focus();
@@ -271,7 +282,7 @@ function myCtrl($scope) {
 
     $scope.mouseMove = function(ev) {
         mousePos = getWorldPos(vec(ev.offsetX, ev.offsetY));
-        $scope.msg = mousePos + '';
+        $scope.msg = mousePos + ' ' + mouseFlags;
         if (grab) {
             var v = mousePos.sub(grab.pos);
             var n = v.len();
@@ -300,7 +311,6 @@ function myCtrl($scope) {
             }
         }
         snap = null;
-        $scope.msg = '';
 
         // Snap the tile to the best match
         $scope.lines = [];
@@ -308,7 +318,7 @@ function myCtrl($scope) {
             $scope.lines.push([bestMatch.m1, bestMatch.m2]);
             //$scope.lines.push([bestMatch.tile1.pos, bestMatch.targetPos]);
             snap = bestMatch;
-            $scope.msg = bestMatch.tile1.type.matches[bestMatch.edge1] + ' ' + bestMatch.tile2.type.matches[bestMatch.edge2];
+            //  $scope.msg = bestMatch.tile1.type.matches[bestMatch.edge1] + ' ' + bestMatch.tile2.type.matches[bestMatch.edge2];
 
         }
     }

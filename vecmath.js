@@ -169,7 +169,7 @@ function approx(a, numdigits) {
     numdigits = numdigits || 5;
     var f = Math.abs(a);
     if (f < 1e-18) return 0;
-    var c = Math.pow(10, Math.round(Math.log10(f)));
+    var c = parseInt(Math.pow(10, Math.round(Math.log10(f))) + .5);
     var m = (a / c).toFixed(numdigits) * c;
     return m;
 }

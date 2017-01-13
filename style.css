@@ -5,6 +5,24 @@ svg {
     cursor: default;
 }
 
+svg line {
+    stroke-linecap: round;
+}
+
+#p1 {
+    fill: tan;
+}
+
+#p2 {
+    fill: peru;    
+}
+
+.tile {
+  stroke: black;
+  stroke-width: .05;
+  stroke-linejoin: bevel;
+}
+
 svg:focus {
     zzoutline: none;
 }
